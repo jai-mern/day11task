@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<body>
+    <script>
+        var res = fetch("https://restcountries.com/v2/all");
+        res.then((data) => data.json()).then((data1) => {
+            // Create the container outside the loop
+            var container = document.createElement("div");
+            container.classList.add("container");
+
+            // Create a row for the first set of cards
+            var row = document.createElement("div");
+            row.classList.add("row");
+            container.appendChild(row);
+
+            for (var i = 0; i < data1.length; i++) {
+                console.log(data1[i].name);
+
+                // Create a new row for every three columns
+                if (i > 0 && i % 3 === 0) {
+                    row = document.createElement("div");
+                    row.classList.add("row");
+                    container.appendChild(row);
+                }
+
+                // Create the card and append it to the current row
+                var div = document.createElement("div");
+                div.classList.add("col-md-4", "mb-4"); // Added "mb-4" for margin between cards
+                div.innerHTML = `
+                    <div class="box-part">
+                        <div class="card" style="width: 18rem;">
+                            <img src="${data1[i].flag}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">${data1[i].name}</h5>
+                                <h5 class="card-title">${data1[i].region}</h5>
+                                <h5 class="card-title">${data1[i].subregion}</h5>
+                                <button class="click-button">click</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Append the card to the current row
+                row.appendChild(div);
+
+                // Add a click event listener to the button
+                var button = div.querySelector('.click-button');
+                button.addEventListener('click', function() {
+                    alert('Button clicked for ' + data1[i].name);
+                });
+            }
+
+            // Append the container to the body after the loop
+            document.body.appendChild(container);
+        });
+    </script>
+</body>
+</html>
